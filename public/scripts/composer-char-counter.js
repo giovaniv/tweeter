@@ -13,22 +13,23 @@ $(document).ready(function() {
     let keyCode = event.keyCode;
     let text = this.value;
     let length = this.value.length;
+    let place = $(this).siblings('.counter');
 
     if (!length) {
-      $('.counter').text(limitChars);
+      place.text(limitChars);
     } else {
       counter = limitChars - length;
       if (keyCode === 8) {
-        $('.counter').text(counter++);
+        place.text(counter++);
       } else {
-        $('.counter').text(counter--);
+        place.text(counter--);
       }
     }
 
     if (length > limitChars) {
-      $('.counter').css("color", "red");
+      place.css("color", "red");
     } else {
-      $('.counter').css("color", "black");
+      place.css("color", "black");
     }
 
   });
