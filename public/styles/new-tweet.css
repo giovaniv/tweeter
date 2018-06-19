@@ -1,0 +1,20 @@
+
+
+section h2 {
+  border-bottom: 1px solid black;
+}
+
+section {
+  border: 1px solid silver;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  padding: 7px;
+}
+
+section textarea {
+  width: 100%;
+}
+
+section span {
+  float: right;
+}
