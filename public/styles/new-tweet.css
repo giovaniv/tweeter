@@ -1,8 +1,9 @@
 
-section {
+section.new-tweet {
   border: 1px solid silver;
   background-color: whitesmoke;
   border-radius: 10px;
+  margin-bottom: 15px;
 }
 
 section.new-tweet h2 {
@@ -22,4 +23,8 @@ section.new-tweet textarea {
 
 section.new-tweet span {
   float: right;
+}
+
+section #allTweets {
+  border: 1px solid white;
 }
