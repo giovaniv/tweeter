@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-  const limitChars = 10;
+  const limitChars = 140;
   let counter = document.getElementsByClassName('counter')[0].innerHTML;
 
   if (!counter) {
@@ -35,8 +35,3 @@ $(document).ready(function() {
   });
 
 });
-
-
-
-
-
