@@ -23,6 +23,7 @@ article.tweet header {
 article.tweet p {
   background-color: white;
   padding: 10px;
+  word-wrap: break-word;
 }
 
 .tweet {
