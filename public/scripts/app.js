@@ -55,9 +55,9 @@ const data = [
 // We create our container with each tweet
 function createTweetElement(tweet) {
 
-  let result;
-  let header;
-  let footer;
+  let result = '';
+  let header = '';
+  let footer = '';
   let username = tweet.user.name;
   let handle = tweet.user.handle;
   let text = tweet.content.text;
@@ -90,23 +90,19 @@ function createTweetElement(tweet) {
 // We loop through tweets, calling createTweetElement function
 // for each tweet to appends it to the tweets container
 function renderTweets(tweets) {
-
   for (let i = 0; i < tweets.length; i++) {
-      let $tweet = createTweetElement(tweets[i]);
-      $('#allTweets').append($tweet);
+    let $tweet = createTweetElement(tweets[i]);
+    $('#allTweets').append($tweet);
   }
-
 }
 
 // Main function that on click event of input button
 // we prevent the submit and call renderTweets function
 $(document).ready(function() {
-
   $("input").click(function(event) {
     event.preventDefault();
     renderTweets(data);
   });
-
 });
 
 
