@@ -4,15 +4,12 @@ section.new-tweet {
   background-color: whitesmoke;
   border-radius: 10px;
   margin-bottom: 15px;
+  padding: 10px;
 }
 
 section.new-tweet h2 {
   margin-top: 0px;
   border-bottom: 1px solid silver;
-}
-
-section.new-tweet {
-  padding: 10px;
 }
 
 section.new-tweet textarea {
@@ -23,8 +20,4 @@ section.new-tweet textarea {
 
 section.new-tweet span {
   float: right;
-}
-
-section #allTweets {
-  border: 1px solid white;
 }

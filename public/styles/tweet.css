@@ -1,3 +1,7 @@
+section #allTweets {
+  border: 1px solid white;
+}
+
 article.tweet {
   border: 1px solid silver;
   margin-bottom: 15px;
