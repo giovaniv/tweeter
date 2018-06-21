@@ -8,12 +8,15 @@
 // we prevent the submit and call renderTweets function
 $(document).ready(function() {
 
+  // function to validate the textarea before the user submit the tweet
   function validateForm() {
     let text = $('textarea').val().length;
+    // if the tweet is empty
     if (!text) {
       alert('Please write something before submit');
       return false;
     }
+    // if the tweet length is bigger than 140 chars (limitChars variable)
     if (text > limitChars) {
       alert(`Maximum of ${limitChars} characters`);
       return false;
@@ -21,25 +24,14 @@ $(document).ready(function() {
     return true;
   }
 
-  // function that check if the text have some HTML tags
-  // and if has, change it to blank space
-  function checkXss(text) {
-    let result = text;
-    let regex = /(<([^>]+)>)/ig;
-    let hasTags = regex.test(text);
-    if (hasTags) {
-      result = text.replace(regex,'');
-    }
-    return result;
-  }
-
+  // function that avoid exploit code (XSS) in our tweet message
   function escape(str) {
     var div = document.createElement('div');
     div.appendChild(document.createTextNode(str));
     return div.innerHTML;
   }
 
-  // We create our container with each tweet
+  // article creation for each new tweet sent in the app
   function createTweetElement(tweet) {
 
     let result = '';
@@ -100,6 +92,7 @@ $(document).ready(function() {
   // executed when we click in the tweet button in form
   $("input").click(function(event) {
 
+    // function to avoid the submit of the form
     event.preventDefault();
 
     // if validateForm function returns true
@@ -112,7 +105,7 @@ $(document).ready(function() {
       }).done(function() {
         // we update the page with the loadTweets function
         $('#allTweets').load(loadTweets());
-        $('form textarea').val('');
+        $('form textarea').val(''); // cleanning textarea text
       })
     }
 
