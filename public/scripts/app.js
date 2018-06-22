@@ -54,7 +54,7 @@ $(document).ready(function() {
     result.append(header);
     result.append("<p>" + escape(text) + "</p>");
     footer = "<footer>";
-    footer += "<span class='time'>" + createdAt + "</span>";
+    footer += "<span class='time'>" + moment(createdAt).fromNow() + "</span>";
     footer += "<span class='icons'>";
     footer += "<a href='#'><i class='fas fa-flag'></i></a>";
     footer += "<a href='#'><i class='fas fa-retweet'></i></a>";
