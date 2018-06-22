@@ -1,0 +1,23 @@
+section.new-tweet {
+  border: 1px solid $border-color;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  padding: 10px;
+
+  h2 {
+    margin-top: 0px;
+    border-bottom: 1px solid $border-color;
+  }
+
+  textarea {
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 5px;
+    z-index: 0;
+  }
+
+  span {
+    float: right;
+  }
+}
