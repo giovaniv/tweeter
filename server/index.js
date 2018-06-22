@@ -1,10 +1,20 @@
 "use strict";
 
 // Basic express setup:
-const PORT          = 8080;
-const express       = require("express");
-const bodyParser    = require("body-parser");
-const app           = express();
+const PORT            = 8080;
+const express         = require("express");
+const bodyParser      = require("body-parser");
+const sassMiddleware  = require("node-sass-middleware");
+const app             = express();
+
+app.use(sassMiddleware({
+    /* Options */
+    src: '/sass',
+    dest: '/public',
+    debug: true,
+    outputStyle: 'compressed',
+    prefix:  '/styles'  // Where prefix is at <link rel="stylesheets" href="prefix/style.css"/>
+}));
 
 // MongoDB parameters
 const MongoClient = require("mongodb").MongoClient;
