@@ -12,6 +12,9 @@ The back-end was made with Node, Express and MongoDB.
 3. Start the web server using the `npm run local` command. The app will be served at <http://localhost:8080/>.
 4. Go to <http://localhost:8080/> in your browser.
 
+PS: If you need or want to change the css style of the page, need to do this in the SASS folder and run
+`npm run scss && npm run local` command before go to <http://localhost:8080/> in your browser.
+
 ## Dependencies
 
 - Express
