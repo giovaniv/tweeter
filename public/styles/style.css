@@ -100,21 +100,25 @@ article.tweet {
   border: 1px solid silver;
   margin-bottom: 15px;
 }
+article.tweet a, article.tweet button {
+  visibility: hidden;
+}
 article.tweet:hover {
   border: 1px solid black;
 }
-article.tweet:hover a {
+article.tweet:hover a, article.tweet:hover button {
   color: #39dbdb;
   visibility: visible;
+  border: none;
+  outline: none;
+  float: right;
+  cursor: pointer;
 }
 article.tweet:hover header .name {
   color: black;
 }
 article.tweet:hover header .logo {
   transform: scale(1.1);
-}
-article.tweet a:link {
-  visibility: hidden;
 }
 article.tweet p {
   background-color: white;

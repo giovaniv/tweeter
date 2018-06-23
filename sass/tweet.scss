@@ -17,13 +17,21 @@ article {
     border: 1px solid silver;
     margin-bottom: 15px;
 
+    a, button {
+      visibility: hidden;
+    }
+
     &:hover {
 
       border: 1px solid black;
 
-      a {
+      a, button {
         color: #39dbdb;
         visibility: visible;
+        border: none;
+        outline: none;
+        float: right;
+        cursor: pointer;
       }
 
       header {
@@ -36,14 +44,6 @@ article {
           transform: scale(1.1);
         }
 
-      }
-
-    }
-
-    a {
-
-      &:link {
-        visibility: hidden;
       }
 
     }
