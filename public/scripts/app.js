@@ -37,6 +37,7 @@ $(document).ready(function() {
     let result = '';
     let header = '';
     let footer = '';
+    let userID = tweet._id;
     let username = tweet.user.name;
     let handle = tweet.user.handle;
     let text = tweet.content.text;
@@ -44,6 +45,13 @@ $(document).ready(function() {
     let avatarSmall = tweet.user.avatars.small;
     let avatarRegular = tweet.user.avatars.regular;
     let avatarLarge = tweet.user.avatars.large;
+    let liked = tweet.liked;
+
+    // to show how many likes the tweet have
+    let likes = tweet.likes;
+    if (!likes) {
+      likes = 0;
+    }
 
     result = $("<article>").addClass("tweet");
     header = "<header>";
@@ -56,9 +64,9 @@ $(document).ready(function() {
     footer = "<footer>";
     footer += "<span class='time'>" + moment(createdAt).fromNow() + "</span>";
     footer += "<span class='icons'>";
-    footer += "<a href='#'><i class='fas fa-flag'></i></a>";
-    footer += "<a href='#'><i class='fas fa-retweet'></i></a>";
-    footer += "<a href='#'><i class='fas fa-heart'></i></a>";
+    footer += "<button><i class='fas fa-flag'></i></button>";
+    footer += "<button><i class='fas fa-retweet'></i></button>";
+    footer += "<button id='likes' data-uid=" + userID + " data-liked=" + liked + "><i class='fas fa-heart'> " + likes + " likes</i></button>";
     footer += "</span></footer>"
     result.append(footer);
 
@@ -85,9 +93,9 @@ $(document).ready(function() {
       }
     });
   }
-
   // function to load the tweets
   loadTweets();
+
 
   // executed when we click in the tweet button in form
   $("input").click(function(event) {
@@ -111,8 +119,25 @@ $(document).ready(function() {
 
   });
 
+
+  // executed when the user click to like the tweet
+  $(document).on('click', '#likes', function(event) {
+    let userID = $(this).data("uid");   //tweet _id value
+    let liked = $(this).data("liked");  //tweet liked value (if tweet liked or not)
+    let url = "/tweets/" + userID;          //endpoint to update tweet
+    // Ajax request to like the tweet
+    $.ajax(url, {
+      method: 'PUT',
+      data: { liked: liked }
+    }).done(function() {
+      // we update the page with the loadTweets function
+      $('#allTweets').load(loadTweets());
+      $('form textarea').val(''); // cleanning textarea text
+    })
+  });
+
   // executed when we click in the compose button
-  $("button").click(function(){
+  $("button.compose").click(function(){
     $(".new-tweet").slideToggle("slow");
     $("textarea").focus();
   });
