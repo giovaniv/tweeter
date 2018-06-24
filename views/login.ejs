@@ -1,0 +1,13 @@
+
+<% include partials/_header.ejs %>
+
+<section class="new-login">
+  <h3>Login</h3>
+  <form action="/users/login" method="POST" id="login">
+    <span class="field">Handle:</span><p><input type=text name="handle" id=handle></p>
+    <span class="field">Password:</span><p><input type=password name="password" id=password></p>
+    <p><input type=submit value="Login"></p>
+  </form>
+</section>
+
+<% include partials/_footer.ejs %>

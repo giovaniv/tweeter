@@ -1,0 +1,15 @@
+
+<% include partials/_header.ejs %>
+
+<section class="new-register">
+  <h3>Register</h3>
+  <form action="/users/register" method="POST" id="register">
+    <span class="field">Name:</span><p><input type=text name="fullname" id=fullname></p>
+    <span class="field">Handle:</span><p><input type=text name="handle" id=handle></p>
+    <span class="field">Avatar:</span><p><input type=text name="avatar" id=avatar></p>
+    <span class="field">Password:</span><p><input type=password name="password" id=password></p>
+    <p><input type=submit value="Register"></p>
+  </form>
+</section>
+
+<% include partials/_footer.ejs %>
