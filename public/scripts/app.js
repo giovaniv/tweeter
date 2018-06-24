@@ -8,19 +8,46 @@
 // we prevent the submit and call renderTweets function
 $(document).ready(function() {
 
+  // function to load the page rendered by the routes
+  function renderPage(data) {
+    let newDoc = document.open("text/html", "replace");
+    newDoc.write(data);
+    newDoc.close();
+  }
+
   // function to validate the textarea before the user submit the tweet
-  function validateForm() {
-    let text = $('textarea').val().length;
+  function isTweetFormValidated() {
+    const limitChars = 140; // Limit of chars that can be tweeted
+    //let text = $('textarea').val().length;
+    let tweetText = $('textarea').val();
     // if the tweet is empty
-    if (!text) {
+    if (!tweetText) {
       alert('Please write something before submit');
       return false;
     }
     // if the tweet length is bigger than 140 chars (limitChars variable)
-    if (text > limitChars) {
+    if (tweetText.length > limitChars) {
       alert(`Maximum of ${limitChars} characters`);
       return false;
     }
+    return true;
+  }
+
+  // function to check if register fields are good before submit
+  function isRegisterFormValidated() {
+    let fullname = $('#fullname').val();
+    let handle = $('#handle').val();
+    let avatar = $('#avatar').val();
+    let password = $('#password').val();
+    console.log(fullname, handle, avatar, password);
+    return true;
+  }
+
+  // function to check if login fields are good before submit
+  function isLoginFormValidated() {
+    let handle = $('#handle').val();
+    let password = $('#password').val();
+    console.log(handle, password);
     return true;
   }
 
@@ -40,7 +67,7 @@ $(document).ready(function() {
     let userID = tweet._id;
     let username = tweet.user.name;
     let handle = tweet.user.handle;
-    let text = tweet.content.text;
+    let tweetMessage = tweet.content.text;
     let createdAt = tweet.created_at;
     let avatarSmall = tweet.user.avatars.small;
     let avatarRegular = tweet.user.avatars.regular;
@@ -60,7 +87,7 @@ $(document).ready(function() {
     header += "<span class='login'>" + handle + "</span>";
     header += "</header>";
     result.append(header);
-    result.append("<p>" + escape(text) + "</p>");
+    result.append("<p>" + escape(tweetMessage) + "</p>");
     footer = "<footer>";
     footer += "<span class='time'>" + moment(createdAt).fromNow() + "</span>";
     footer += "<span class='icons'>";
@@ -97,26 +124,45 @@ $(document).ready(function() {
   loadTweets();
 
 
-  // executed when we click in the tweet button in form
-  $("input").click(function(event) {
+  // TWEET submit button form
+  $('form').on('submit', function(event) {
 
-    // function to avoid the submit of the form
     event.preventDefault();
+    let elementID = $(this).attr('id');
 
-    // if validateForm function returns true
-    if (validateForm()) {
-      let formData = $("form").serialize(); //Get the data from the form
-      // Ajax request for create a new tweet in JSON at /tweets
-      $.ajax('/tweets', {
-        method: 'POST',
-        data: formData
-      }).done(function() {
-        // we update the page with the loadTweets function
-        $('#allTweets').load(loadTweets());
-        $('form textarea').val(''); // cleanning textarea text
-      })
+    // user clicked in tweet button
+    if (!elementID) {
+      // if validateForm function returns true
+      if (isTweetFormValidated()) {
+        let formData = $("form").serialize(); //Get the data from the form
+        // Ajax request for create a new tweet in JSON at /tweets
+        $.ajax('/tweets', {
+          method: 'POST',
+          data: formData
+        }).done(function() {
+          // we update the page with the loadTweets function
+          $('#allTweets').load(loadTweets());
+          $('form textarea').val(''); // cleanning textarea text
+        })
+      }
     }
 
+  });
+
+
+  // REGISTER submit button form
+  $("#register").submit(function(event) {
+    if (isRegisterFormValidated()) {
+      console.log('registro validado');
+    }
+  });
+
+
+  // LOGIN submit button form
+  $("#login").submit(function(event) {
+    if (isLoginFormValidated()) {
+      console.log('login validado');
+    }
   });
 
 
@@ -136,10 +182,48 @@ $(document).ready(function() {
     })
   });
 
-  // executed when we click in the compose button
-  $("button.compose").click(function(){
+  // executed when we click in the compose button in NAV
+  $("button.newTweet").click(function(){
     $(".new-tweet").slideToggle("slow");
     $("textarea").focus();
+  });
+
+  // executed when we click in the register button in NAV
+  $("button.register").click(function(){
+    $.ajax({
+      url: '/users/register',
+      type: 'GET',
+      success: function(data) {
+        renderPage(data);
+      },
+      error: function(e) {
+        console.log(e.message);
+      }
+    });
+  });
+
+  // executed when we click in the login button in NAV
+  $("button.login").click(function(){
+    $.ajax({
+      url: '/users/login',
+      type: 'GET',
+      success: function(data) {
+        renderPage(data);
+      },
+      error: function(e) {
+        console.log(e.message);
+      }
+    });
+  });
+
+  // executed when we click in the logout button in NAV
+  $("button.logout").click(function(){
+    $.ajax('/users/logout', {
+      method: 'POST',
+      success: function() {
+        console.log("logout");
+      }
+    });
   });
 
 });

@@ -1,10 +1,17 @@
 
-const limitChars = 140; // Limit of chars that can be tweeted
+// const limitChars = 140; // Limit of chars that can be tweeted
 
 $(document).ready(function() {
 
+  const limitChars = 140; // Limit of chars that can be tweeted
+
+  let obj = this.getElementsByClassName('counter')[0];
+  let counter;
+
   //get the number of the counter
-  let counter = document.getElementsByClassName('counter')[0].innerHTML;
+  if (obj) {
+    counter = obj.innerHTML;
+  }
 
   // if the counter is empty, it gets the limitChars
   if (!counter) {
