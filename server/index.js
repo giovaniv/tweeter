@@ -21,7 +21,6 @@ const MongoClient = require("mongodb").MongoClient;
 const MONGODB_URI = "mongodb://localhost:27017/tweeter";
 
 app.use(bodyParser.urlencoded({ extended: true }));
-//app.use(express.static("public"));
 
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
