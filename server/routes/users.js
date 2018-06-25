@@ -4,7 +4,6 @@ const cookieSession   = require('cookie-session')
 const bcrypt          = require('bcryptjs');
 
 const express         = require('express');
-
 const usersRoutes     = express.Router();
 
 module.exports = function(DataHelpers) {
