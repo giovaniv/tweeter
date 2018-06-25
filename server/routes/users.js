@@ -1,9 +1,10 @@
 "use strict";
 
-// const userHelper    = require("../lib/util/user-helper")
+const express         = require('express');
+const cookieSession   = require('cookie-session')
+const bcrypt          = require('bcryptjs');
 
-const express       = require('express');
-const usersRoutes  = express.Router();
+const usersRoutes     = express.Router();
 
 module.exports = function(DataHelpers) {
 
@@ -23,11 +24,12 @@ module.exports = function(DataHelpers) {
     const handle = req.body.handle;
     const avatar = req.body.avatar;
     const password = req.body.password;
+    const hashed = bcrypt.hashSync(password, 10);
 
     const newUser = {
       name: fullName,
       handle: handle,
-      password: password,
+      password: hashed,   // encripted password
       avatars: {
         small: avatar,
         regular: avatar,
@@ -35,15 +37,30 @@ module.exports = function(DataHelpers) {
       }
     };
 
-    DataHelpers.createNewUser(newUser, (err) => {
+    // first we check if the user already exists
+    DataHelpers.checkUser(newUser, (err, resp) => {
       if (err) {
         res.status(500).json({ error: err.message });
       } else {
-        res.status(201).render('index');
+        // if we had success and the user really dont exists, we create it
+        let result = Object.keys(resp).length;
+        if (result === 0) {
+          DataHelpers.createNewUser(newUser, (err) => {
+            if (err) {
+              res.status(500).json({ error: err.message });
+            } else {
+              req.session.myUser = newUser.handle.toString();
+              res.status(301).redirect("/");
+            }
+          });
+        } else {
+          res.status(201).render("register", { error: 'User already exists' });
+        }
       }
     });
 
     return;
+
   });
 
   // ==========================================================

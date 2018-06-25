@@ -55,6 +55,17 @@ module.exports = function makeDataHelpers(db) {
       });
     },
 
+    // check if the user already exists
+    checkUser: function(user, callback) {
+      let query = { "handle": user.handle };
+      db.collection("users").find(query).toArray((err, result) => {
+        if (err) {
+          return callback(err);
+        }
+        callback(null, result);
+      });
+    },
+
     // create a new user in the tweeter database, collection users
     createNewUser: function(newUser, callback) {
       db.collection("users").insertOne(newUser,(err) => {
@@ -67,3 +78,4 @@ module.exports = function makeDataHelpers(db) {
 
   };
 }
+

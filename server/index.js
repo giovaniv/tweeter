@@ -5,6 +5,8 @@ const PORT            = 8080;
 const express         = require("express");
 const bodyParser      = require("body-parser");
 const sassMiddleware  = require("node-sass-middleware");
+const cookieSession   = require('cookie-session')
+const bcrypt          = require('bcryptjs');
 const app             = express();
 
 app.use(sassMiddleware({
@@ -22,7 +24,13 @@ const MONGODB_URI = "mongodb://localhost:27017/tweeter";
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(cookieSession({
+  name: 'myUser',
+  keys: ['key1', 'key2']
+}))
+
 app.use(express.static("public"));
+
 app.set('view engine', 'ejs');
 
 // Try a connection to MongoDB
