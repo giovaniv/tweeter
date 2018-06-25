@@ -56,9 +56,8 @@ module.exports = function makeDataHelpers(db) {
     },
 
     // check if the user already exists
-    checkUser: function(user, callback) {
-      let query = { "handle": user.handle };
-      db.collection("users").find(query).toArray((err, result) => {
+    checkUser: function(userQuery, callback) {
+      db.collection("users").find(userQuery).toArray((err, result) => {
         if (err) {
           return callback(err);
         }

@@ -175,7 +175,13 @@ $(document).ready(function() {
   // LOGIN submit button form
   $("#login").submit(function(event) {
     if (isLoginFormValidated()) {
-      console.log('login validado');
+      let formData = $("form").serialize(); //Get the data from the form
+      $.ajax('/users/login', {
+        method: 'POST',
+        data: formData
+      }).done(function(data) {
+        renderPage(data);
+      })
     }
   });
 
@@ -234,8 +240,8 @@ $(document).ready(function() {
   $("button.logout").click(function(){
     $.ajax('/users/logout', {
       method: 'POST',
-      success: function() {
-        console.log("logout");
+      success: function(data) {
+        renderPage(data);
       }
     });
   });

@@ -1,8 +1,9 @@
 "use strict";
 
-const express         = require('express');
 const cookieSession   = require('cookie-session')
 const bcrypt          = require('bcryptjs');
+
+const express         = require('express');
 
 const usersRoutes     = express.Router();
 
@@ -14,7 +15,7 @@ module.exports = function(DataHelpers) {
 
   // Redirection to the register page
   usersRoutes.get("/register", (req, res) => {
-    res.status(201).render('register');
+    res.status(201).render("register", { myUser: req.session.myUser, myName: req.session.myName } );
   });
 
   // Register a new user in database
@@ -37,8 +38,10 @@ module.exports = function(DataHelpers) {
       }
     };
 
+    const checkUser = { handle: handle };
+
     // first we check if the user already exists
-    DataHelpers.checkUser(newUser, (err, resp) => {
+    DataHelpers.checkUser(checkUser, (err, resp) => {
       if (err) {
         res.status(500).json({ error: err.message });
       } else {
@@ -49,12 +52,13 @@ module.exports = function(DataHelpers) {
             if (err) {
               res.status(500).json({ error: err.message });
             } else {
-              req.session.myUser = newUser.handle.toString();
-              res.status(301).redirect("/");
+              req.session.myUser = newUser.handle;
+              req.session.myName = newUser.name;
+              res.status(201).render("index", { myUser: req.session.myUser, myName: req.session.myName } );
             }
           });
         } else {
-          res.status(201).render("register", { error: 'User already exists' });
+          res.status(201).render("register", { myUser: req.session.myUser, myName: req.session.myName, error: 'User already exists' });
         }
       }
     });
@@ -71,16 +75,43 @@ module.exports = function(DataHelpers) {
 
   // Redirection to the register page
   usersRoutes.get("/login", (req, res) => {
-    res.status(201).render('login');
+    res.status(201).render("login", { myUser: req.session.myUser, myName: req.session.myName } );
   });
 
-  // // Login in the Tweeter App
-  // usersRoutes.post("/login", (req, res) => {
-  //   // let userID = req.session.user_id;
-  //   // let templateVars = { user: userDatabase[userID] };
-  //   // res.render('login', templateVars);
-  //   res.render('login');
-  // });
+  // Register a new user in database
+  usersRoutes.post("/login", (req, res) => {
+
+    const handle    = req.body.handle;
+    const password  = req.body.password;
+
+    const checkUser = { handle: handle };
+    let paramVars =
+
+    // first we check if the user already exists
+    DataHelpers.checkUser(checkUser, (err, user) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+      } else {
+        // if we had success and the user really exists,
+        // we check if the password is the same
+        let result = Object.keys(user).length;
+        if (result > 0) {
+          let checkPassword = bcrypt.compareSync(password, user[0].password);
+          if (checkPassword) {
+            req.session.myUser = user[0].handle;
+            req.session.myName = user[0].name;
+            res.status(201).render("index", { myUser: req.session.myUser, myName: req.session.myName } );
+          } else {
+            res.status(201).render("login", { myUser: req.session.myUser, myName: req.session.myName, error: 'Wrong password. Try again.' });
+          }
+        // if the user wasn't found, error
+        } else {
+          res.status(201).render("login", { myUser: req.session.myUser, myName: req.session.myName, error: 'Username not found. Try again.' });
+        }
+      }
+    });
+
+  });
 
   // ==========================================================
 
@@ -91,7 +122,7 @@ module.exports = function(DataHelpers) {
   // Logout the user and clean cookie
   usersRoutes.post('/logout', (req, res) => {
     req.session = null;
-    res.status(201).render('index');
+    res.status(201).render("index", { myUser: null, myName: null } );
   });
 
   return usersRoutes;

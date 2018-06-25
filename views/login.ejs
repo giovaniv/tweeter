@@ -3,6 +3,9 @@
 
 <section class="new-login">
   <h3>Login</h3>
+  <% if (locals.error) { %>
+    <p class="alert alert-danger"><%= error %></p>
+  <% } %>
   <form action="/users/login" method="POST" id="login">
     <span class="field">Handle:</span><p><input type=text name="handle" id=handle></p>
     <span class="field">Password:</span><p><input type=password name="password" id=password></p>

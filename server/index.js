@@ -9,6 +9,16 @@ const cookieSession   = require('cookie-session')
 const bcrypt          = require('bcryptjs');
 const app             = express();
 
+app.use(cookieSession({
+  name: 'myUser',
+  keys: ['key1', 'key2']
+}));
+
+app.use(cookieSession({
+  name: 'myName',
+  keys: ['key1', 'key2']
+}));
+
 app.use(sassMiddleware({
     /* Options */
     src: '/sass',
@@ -23,11 +33,6 @@ const MongoClient = require("mongodb").MongoClient;
 const MONGODB_URI = "mongodb://localhost:27017/tweeter";
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use(cookieSession({
-  name: 'myUser',
-  keys: ['key1', 'key2']
-}))
 
 app.use(express.static("public"));
 
@@ -62,7 +67,7 @@ MongoClient.connect(MONGODB_URI, (err, db) => {
   app.use("/users", usersRoutes);
 
   app.get("/", (req, res) => {
-    res.render("index");
+    res.render("index", { myUser: req.session.myUser, myName: req.session.myName } );
   });
 
   app.listen(PORT, () => {
