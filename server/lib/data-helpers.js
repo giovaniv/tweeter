@@ -53,7 +53,17 @@ module.exports = function makeDataHelpers(db) {
         }
         callback(null, true);
       });
-    }
+    },
+
+    // create a new user in the tweeter database, collection users
+    createNewUser: function(newUser, callback) {
+      db.collection("users").insertOne(newUser,(err) => {
+        if (err) {
+          return callback(err);
+        }
+        callback(null, true);
+      });
+    },
 
   };
 }

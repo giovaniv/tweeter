@@ -22,12 +22,12 @@ $(document).ready(function() {
     let tweetText = $('textarea').val();
     // if the tweet is empty
     if (!tweetText) {
-      alert('Please write something before submit');
+      alert('Please write something before submit!');
       return false;
     }
     // if the tweet length is bigger than 140 chars (limitChars variable)
     if (tweetText.length > limitChars) {
-      alert(`Maximum of ${limitChars} characters`);
+      alert(`Maximum of ${limitChars} characters!`);
       return false;
     }
     return true;
@@ -39,16 +39,24 @@ $(document).ready(function() {
     let handle = $('#handle').val();
     let avatar = $('#avatar').val();
     let password = $('#password').val();
-    console.log(fullname, handle, avatar, password);
-    return true;
+    if (!fullname || !handle || !avatar || !password) {
+      alert('Please fill all the fields!');
+      return false;
+    } else {
+      return true;
+    }
   }
 
   // function to check if login fields are good before submit
   function isLoginFormValidated() {
     let handle = $('#handle').val();
     let password = $('#password').val();
-    console.log(handle, password);
-    return true;
+    if (!handle || !password) {
+      alert('Please fill all the fields!');
+      return false;
+    } else {
+      return true;
+    }
   }
 
   // function that avoid exploit code (XSS) in our tweet message
@@ -153,7 +161,13 @@ $(document).ready(function() {
   // REGISTER submit button form
   $("#register").submit(function(event) {
     if (isRegisterFormValidated()) {
-      console.log('registro validado');
+      let formData = $("form").serialize(); //Get the data from the form
+      $.ajax('/users/register', {
+        method: 'POST',
+        data: formData
+      }).done(function(data) {
+        renderPage(data);
+      })
     }
   });
 

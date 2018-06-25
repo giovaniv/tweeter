@@ -18,16 +18,13 @@ module.exports = function(DataHelpers) {
 
   // Register a new user in database
   usersRoutes.post("/register", (req, res) => {
-    // let userID = req.session.user_id;
-    // let templateVars = { user: userDatabase[userID] };
-    // res.render('register', templateVars);
 
-    const fullName = req.body.name;
+    const fullName = req.body.fullname;
     const handle = req.body.handle;
     const avatar = req.body.avatar;
     const password = req.body.password;
 
-    const user = {
+    const newUser = {
       name: fullName,
       handle: handle,
       password: password,
@@ -38,7 +35,13 @@ module.exports = function(DataHelpers) {
       }
     };
 
-    console.log(user);
+    DataHelpers.createNewUser(newUser, (err) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+      } else {
+        res.status(201).render('index');
+      }
+    });
 
     return;
   });
